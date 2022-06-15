@@ -16,13 +16,13 @@ A • B • (C • D • ~E + ~C) , which is equivalent to (A • B • C • D 
 
 Hence, we design a Grover's Reflection Oracle which would intake a uniform superposition and induce a phase kickback for whichever input satisfies the given Boolean. While this can be done by formulating a Unitary Matrix using classical methods and implementing it as a gate, I have done it in a different manner which encodes the Boolean Expression using known quantum gates including the H gate and Generalised Toffoli gates. 
 
-As you have seen, I have expanded the Boolean Expression as ABCD~E + AB~C . It appears I have split it into two parts ABCD~E , AB~C , and I would use Generalised Toffoli Gate with X gates and an ancilla qubit in |-> state as the target qubit, so that a phase kickback is introduced whenever the Boolean is satisfied. The phase kickback corresponds to a reflection of the winning states.
+As you have seen, I have expanded the Boolean Expression as ABCD~E + AB~C . It appears I have split it into two parts ABCD ~E , AB ~C , and I would use Generalised Toffoli Gate with X gates and an ancilla qubit in |-> state as the target qubit, so that a phase kickback is introduced whenever the Boolean is satisfied. The phase kickback corresponds to a reflection of the winning states.
  
 Do note that I used an additional ancilla qubit to design a C5X gate here since the C5X (and in general N-Control Toffoli Gates) were not available in Qiskit. Ideally I would use only 1 ancilla qubit. I used the C3X and C4X Gates available in Qiskit since designing them with only CX gates would use too many ancilla qubits.
 Each Generalised Toffoli Gate (with bit flips wherever required) represented the elements of the Boolean Expression joined together with AND, and multiple such gates in conjunction summed them up (i.e. in OR). This is how I managed to encode the Boolean Expression in terms of these gates.
 
 Now coming to the second part i.e. the Diffuser. 
-The diffuser matrix is of the form 2|D><D|-I. |D> represents the uniform superposition created by applying Hadamard gate on n qubits initialised to |0> state. This geometrically refers to a reflection about the original |D> state of the Qubits before entering the Oracle, hence leading to an increase in amplitude for the winning states. A general diffuser circuit for 3 qubits is shown below:
+The diffuser matrix is of the form 2|D><D|-I. |D> represents the uniform superposition created by applying Hadamard gate on n qubits initialised to |0> state. This geometrically refers to a reflection about the original |D> state of the Qubits before entering the Oracle, hence leading to an increase in amplitude for the winning states.
  
 For an n qubit system, we would need a multi-controlled Z gate, which was not available in Qiskit. However, using a C4X Toffoli, a single CZ gate and an Ancilla Qubit (which I recycled), I was able to design an effective 5-controlled Z gate:
  
